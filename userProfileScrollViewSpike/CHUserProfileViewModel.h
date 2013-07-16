@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSString *userFirstName;
 @property (nonatomic, strong) NSString *userLastName;
+@property (nonatomic, strong) NSString *jobTitle;
 @property (nonatomic, strong) NSString *profileImageURL;
 @property (nonatomic, strong) NSString *emailAddress;
 @property (nonatomic, strong) NSString *phoneNumber;

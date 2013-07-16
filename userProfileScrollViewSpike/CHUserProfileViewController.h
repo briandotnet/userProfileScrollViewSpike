@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CHUserProfileViewModel.h"
 
-@interface CHUserProfileViewController : UIViewController
+@interface CHUserProfileViewController : UIViewController <UIScrollViewDelegate>{
+    CHUserProfileViewModel *userProfile;
+}
 
-- (id)initWithUserProfileViewModel:(UserProfileViewModel *)userProfile;
+- (id)initWithUserProfileViewModel:(CHUserProfileViewModel *)theUserProfile;
 
 @end

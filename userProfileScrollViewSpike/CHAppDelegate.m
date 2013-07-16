@@ -21,6 +21,12 @@
     
     
     CHUserProfileViewModel *userProfile = [[CHUserProfileViewModel alloc] init];
+    userProfile.userFirstName = @"Alicia";
+    userProfile.userLastName = @"Burton";
+    userProfile.jobTitle  = @"Account Executive";
+    userProfile.profileImageURL = @"smile";
+    userProfile.phoneNumber = @"1(415)888-7777";
+    userProfile.emailAddress = @"sales@force.com";
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         self.viewController = [[CHUserProfileViewController alloc] initWithUserProfileViewModel:userProfile];
