@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "CHUserProfileViewModel.h"
+#import "CHSimpleTableViewController.h"
 
-@interface CHUserProfileViewController : UIViewController <UIScrollViewDelegate>{
+@interface CHUserProfileViewController : UIViewController <UIScrollViewDelegate, TableViewScrollDelegate>{
     CHUserProfileViewModel *userProfile;
 }
 
