@@ -10,7 +10,7 @@
 
 #import "CHUserProfileViewController.h"
 #import "CHUserProfileViewModel.h"
-
+#import "CHUserProfileTopView.h"
 
 @implementation CHAppDelegate
 
@@ -28,11 +28,23 @@
     userProfile.phoneNumber = @"1(415)888-7777";
     userProfile.emailAddress = @"sales@force.com";
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        self.viewController = [[CHUserProfileViewController alloc] initWithUserProfileViewModel:userProfile];
-    } else {
-        self.viewController = [[CHUserProfileViewController alloc] initWithUserProfileViewModel:userProfile];
-    }
+
+    UIViewController *topViewController = [[UIViewController alloc] init];
+    topViewController.view = [[CHUserProfileTopView alloc] initWithUserProfile:userProfile];
+    
+    CHSimpleTableViewController* tableviewController1;
+    CHSimpleTableViewController* tableviewController2;
+    CHSimpleTableViewController* tableviewController3;
+    
+    tableviewController1 = [[CHSimpleTableViewController alloc] init];
+    tableviewController2 = [[CHSimpleTableViewController alloc] init];
+    tableviewController3 = [[CHSimpleTableViewController alloc] init];
+
+    
+    
+    
+    self.viewController = [[CHUserProfileViewController alloc] initWithUserProfileViewModel:userProfile viewControllerForTop:topViewController viewControllersForPagedDetails:[NSArray arrayWithObjects:tableviewController1, tableviewController2, tableviewController3, nil]];
+
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

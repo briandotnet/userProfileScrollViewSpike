@@ -8,14 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		D130FF101795B5F0005973B4 /* wallpaper.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D130FF0F1795B5F0005973B4 /* wallpaper.jpg */; };
-		D130FF131795C56E005973B4 /* CHSimpleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D130FF121795C56E005973B4 /* CHSimpleTableViewController.m */; };
 		D14E912217947D34000ADE56 /* FLKAutoLayoutPredicateList.m in Sources */ = {isa = PBXBuildFile; fileRef = D14E911D17947D34000ADE56 /* FLKAutoLayoutPredicateList.m */; };
 		D14E912317947D34000ADE56 /* UIView+FLKAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D14E911F17947D34000ADE56 /* UIView+FLKAutoLayout.m */; };
 		D14E912417947D34000ADE56 /* UIView+FLKAutoLayoutPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = D14E912117947D34000ADE56 /* UIView+FLKAutoLayoutPredicate.m */; };
 		D14E912617948551000ADE56 /* iPhoneUPView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D14E912517948551000ADE56 /* iPhoneUPView.xib */; };
-		D14E91291794AD00000ADE56 /* CHUserSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D14E91281794AD00000ADE56 /* CHUserSummaryView.m */; };
 		D14E912D1794BDE7000ADE56 /* smile.png in Resources */ = {isa = PBXBuildFile; fileRef = D14E912B1794BDE7000ADE56 /* smile.png */; };
 		D14E912E1794BDE7000ADE56 /* smile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D14E912C1794BDE7000ADE56 /* smile@2x.png */; };
+		D17BDDFE1797608700E7840A /* CHUserProfileViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D17BDDF41797608700E7840A /* CHUserProfileViewModel.m */; };
+		D17BDDFF1797608700E7840A /* CHSimpleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D17BDDF81797608700E7840A /* CHSimpleTableViewController.m */; };
+		D17BDE001797608700E7840A /* CHUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D17BDDFA1797608700E7840A /* CHUserProfileViewController.m */; };
+		D17BDE011797608700E7840A /* CHUserProfileTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = D17BDDFD1797608700E7840A /* CHUserProfileTopView.m */; };
 		D190FB761790B46100B65FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D190FB751790B46100B65FA5 /* UIKit.framework */; };
 		D190FB781790B46100B65FA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D190FB771790B46100B65FA5 /* Foundation.framework */; };
 		D190FB7A1790B46100B65FA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D190FB791790B46100B65FA5 /* CoreGraphics.framework */; };
@@ -25,13 +27,11 @@
 		D190FB881790B46100B65FA5 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D190FB871790B46100B65FA5 /* Default.png */; };
 		D190FB8A1790B46100B65FA5 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D190FB891790B46100B65FA5 /* Default@2x.png */; };
 		D190FB8C1790B46100B65FA5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D190FB8B1790B46100B65FA5 /* Default-568h@2x.png */; };
-		D190FB8F1790B46200B65FA5 /* CHUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D190FB8E1790B46200B65FA5 /* CHUserProfileViewController.m */; };
 		D190FB9D1790B46200B65FA5 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D190FB9C1790B46200B65FA5 /* SenTestingKit.framework */; };
 		D190FB9E1790B46200B65FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D190FB751790B46100B65FA5 /* UIKit.framework */; };
 		D190FB9F1790B46200B65FA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D190FB771790B46100B65FA5 /* Foundation.framework */; };
 		D190FBA71790B46200B65FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D190FBA51790B46200B65FA5 /* InfoPlist.strings */; };
 		D190FBAA1790B46200B65FA5 /* userProfileScrollViewSpikeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D190FBA91790B46200B65FA5 /* userProfileScrollViewSpikeTests.m */; };
-		D190FBB51790C9A000B65FA5 /* CHUserProfileViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D190FBB41790C9A000B65FA5 /* CHUserProfileViewModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,8 +46,6 @@
 
 /* Begin PBXFileReference section */
 		D130FF0F1795B5F0005973B4 /* wallpaper.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = wallpaper.jpg; path = userProfileScrollViewSpike/wallpaper.jpg; sourceTree = SOURCE_ROOT; };
-		D130FF111795C56E005973B4 /* CHSimpleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHSimpleTableViewController.h; sourceTree = "<group>"; };
-		D130FF121795C56E005973B4 /* CHSimpleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHSimpleTableViewController.m; sourceTree = "<group>"; };
 		D14E911C17947D34000ADE56 /* FLKAutoLayoutPredicateList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLKAutoLayoutPredicateList.h; sourceTree = "<group>"; };
 		D14E911D17947D34000ADE56 /* FLKAutoLayoutPredicateList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLKAutoLayoutPredicateList.m; sourceTree = "<group>"; };
 		D14E911E17947D34000ADE56 /* UIView+FLKAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FLKAutoLayout.h"; sourceTree = "<group>"; };
@@ -55,10 +53,17 @@
 		D14E912017947D34000ADE56 /* UIView+FLKAutoLayoutPredicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FLKAutoLayoutPredicate.h"; sourceTree = "<group>"; };
 		D14E912117947D34000ADE56 /* UIView+FLKAutoLayoutPredicate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FLKAutoLayoutPredicate.m"; sourceTree = "<group>"; };
 		D14E912517948551000ADE56 /* iPhoneUPView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = iPhoneUPView.xib; sourceTree = "<group>"; };
-		D14E91271794AD00000ADE56 /* CHUserSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUserSummaryView.h; sourceTree = "<group>"; };
-		D14E91281794AD00000ADE56 /* CHUserSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHUserSummaryView.m; sourceTree = "<group>"; };
 		D14E912B1794BDE7000ADE56 /* smile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smile.png; sourceTree = "<group>"; };
 		D14E912C1794BDE7000ADE56 /* smile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smile@2x.png"; sourceTree = "<group>"; };
+		D17BDDF31797608700E7840A /* CHUserProfileViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUserProfileViewModel.h; sourceTree = "<group>"; };
+		D17BDDF41797608700E7840A /* CHUserProfileViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHUserProfileViewModel.m; sourceTree = "<group>"; };
+		D17BDDF71797608700E7840A /* CHSimpleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHSimpleTableViewController.h; sourceTree = "<group>"; };
+		D17BDDF81797608700E7840A /* CHSimpleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHSimpleTableViewController.m; sourceTree = "<group>"; };
+		D17BDDF91797608700E7840A /* CHUserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUserProfileViewController.h; sourceTree = "<group>"; };
+		D17BDDFA1797608700E7840A /* CHUserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHUserProfileViewController.m; sourceTree = "<group>"; };
+		D17BDDFC1797608700E7840A /* CHUserProfileTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUserProfileTopView.h; sourceTree = "<group>"; };
+		D17BDDFD1797608700E7840A /* CHUserProfileTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHUserProfileTopView.m; sourceTree = "<group>"; };
+		D17BDE02179760E300E7840A /* CHTableViewScrollDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHTableViewScrollDelegate.h; sourceTree = "<group>"; };
 		D190FB721790B46100B65FA5 /* userProfileScrollViewSpike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = userProfileScrollViewSpike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D190FB751790B46100B65FA5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D190FB771790B46100B65FA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -72,16 +77,12 @@
 		D190FB871790B46100B65FA5 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		D190FB891790B46100B65FA5 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		D190FB8B1790B46100B65FA5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		D190FB8D1790B46100B65FA5 /* CHUserProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHUserProfileViewController.h; sourceTree = "<group>"; };
-		D190FB8E1790B46200B65FA5 /* CHUserProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHUserProfileViewController.m; sourceTree = "<group>"; };
 		D190FB9B1790B46200B65FA5 /* userProfileScrollViewSpikeTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = userProfileScrollViewSpikeTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D190FB9C1790B46200B65FA5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		D190FBA41790B46200B65FA5 /* userProfileScrollViewSpikeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "userProfileScrollViewSpikeTests-Info.plist"; sourceTree = "<group>"; };
 		D190FBA61790B46200B65FA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D190FBA81790B46200B65FA5 /* userProfileScrollViewSpikeTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = userProfileScrollViewSpikeTests.h; sourceTree = "<group>"; };
 		D190FBA91790B46200B65FA5 /* userProfileScrollViewSpikeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = userProfileScrollViewSpikeTests.m; sourceTree = "<group>"; };
-		D190FBB31790C9A000B65FA5 /* CHUserProfileViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUserProfileViewModel.h; sourceTree = "<group>"; };
-		D190FBB41790C9A000B65FA5 /* CHUserProfileViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHUserProfileViewModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +132,50 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		D17BDDF21797608700E7840A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D17BDDF31797608700E7840A /* CHUserProfileViewModel.h */,
+				D17BDDF41797608700E7840A /* CHUserProfileViewModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D17BDDF51797608700E7840A /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				D17BDE02179760E300E7840A /* CHTableViewScrollDelegate.h */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		D17BDDF61797608700E7840A /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D17BDDF71797608700E7840A /* CHSimpleTableViewController.h */,
+				D17BDDF81797608700E7840A /* CHSimpleTableViewController.m */,
+				D17BDDF91797608700E7840A /* CHUserProfileViewController.h */,
+				D17BDDFA1797608700E7840A /* CHUserProfileViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		D17BDDFB1797608700E7840A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D17BDDFC1797608700E7840A /* CHUserProfileTopView.h */,
+				D17BDDFD1797608700E7840A /* CHUserProfileTopView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D17BDE031797657E00E7840A /* Additions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Additions;
+			sourceTree = "<group>";
+		};
 		D190FB691790B46100B65FA5 = {
 			isa = PBXGroup;
 			children = (
@@ -164,20 +209,17 @@
 		D190FB7B1790B46100B65FA5 /* userProfileScrollViewSpike */ = {
 			isa = PBXGroup;
 			children = (
-				D14E912A1794BDE7000ADE56 /* Images */,
-				D14E911B17947D34000ADE56 /* FLKAutoLayout */,
+				D17BDE031797657E00E7840A /* Additions */,
 				D190FB841790B46100B65FA5 /* CHAppDelegate.h */,
 				D190FB851790B46100B65FA5 /* CHAppDelegate.m */,
-				D190FB8D1790B46100B65FA5 /* CHUserProfileViewController.h */,
-				D190FB8E1790B46200B65FA5 /* CHUserProfileViewController.m */,
-				D190FBB31790C9A000B65FA5 /* CHUserProfileViewModel.h */,
-				D190FBB41790C9A000B65FA5 /* CHUserProfileViewModel.m */,
-				D190FB7C1790B46100B65FA5 /* Supporting Files */,
+				D14E911B17947D34000ADE56 /* FLKAutoLayout */,
+				D14E912A1794BDE7000ADE56 /* Images */,
 				D14E912517948551000ADE56 /* iPhoneUPView.xib */,
-				D14E91271794AD00000ADE56 /* CHUserSummaryView.h */,
-				D14E91281794AD00000ADE56 /* CHUserSummaryView.m */,
-				D130FF111795C56E005973B4 /* CHSimpleTableViewController.h */,
-				D130FF121795C56E005973B4 /* CHSimpleTableViewController.m */,
+				D17BDDF21797608700E7840A /* Models */,
+				D17BDDF51797608700E7840A /* Protocols */,
+				D190FB7C1790B46100B65FA5 /* Supporting Files */,
+				D17BDDF61797608700E7840A /* ViewControllers */,
+				D17BDDFB1797608700E7840A /* Views */,
 			);
 			path = userProfileScrollViewSpike;
 			sourceTree = "<group>";
@@ -331,13 +373,13 @@
 			files = (
 				D190FB821790B46100B65FA5 /* main.m in Sources */,
 				D190FB861790B46100B65FA5 /* CHAppDelegate.m in Sources */,
-				D190FB8F1790B46200B65FA5 /* CHUserProfileViewController.m in Sources */,
-				D190FBB51790C9A000B65FA5 /* CHUserProfileViewModel.m in Sources */,
 				D14E912217947D34000ADE56 /* FLKAutoLayoutPredicateList.m in Sources */,
 				D14E912317947D34000ADE56 /* UIView+FLKAutoLayout.m in Sources */,
 				D14E912417947D34000ADE56 /* UIView+FLKAutoLayoutPredicate.m in Sources */,
-				D14E91291794AD00000ADE56 /* CHUserSummaryView.m in Sources */,
-				D130FF131795C56E005973B4 /* CHSimpleTableViewController.m in Sources */,
+				D17BDDFE1797608700E7840A /* CHUserProfileViewModel.m in Sources */,
+				D17BDDFF1797608700E7840A /* CHSimpleTableViewController.m in Sources */,
+				D17BDE001797608700E7840A /* CHUserProfileViewController.m in Sources */,
+				D17BDE011797608700E7840A /* CHUserProfileTopView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
