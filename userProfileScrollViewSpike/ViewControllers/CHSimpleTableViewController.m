@@ -14,18 +14,18 @@
 
 @implementation CHSimpleTableViewController
 
-@synthesize tableView=_tableView;
+@synthesize tableView = _tableView;
 
 - (id)init
 {
     self = [super init];
     if (self) {
         // Custom initialization
-        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-        _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _tableView.dataSource = self;
-        _tableView.delegate = self;
-        [self.view addSubview: _tableView];
+        self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.tableView.dataSource = self;
+        self.tableView.delegate = self;
+        [self.view addSubview: self.tableView];
     }
     return self;
 }
@@ -130,6 +130,13 @@
      */
 }
 
+#pragma mark - UIScrollViewDelegate methods
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (self.scrollDelegate && [self.scrollDelegate respondsToSelector:@selector(tableViewDidScroll:)]) {
+        [self.scrollDelegate tableViewDidScroll:scrollView];
+    }
+}
 
 
 @end

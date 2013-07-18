@@ -1,5 +1,5 @@
 //
-//  CHTableViewScrollDelegate.h
+//  CHScrollableViewControllerDelegate.h
 //  userProfileScrollViewSpike
 //
 //  Created by Brian Ge on 7/17/13.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol CHTableViewScrollDelegate <NSObject>
+@protocol CHScrollableViewControllerDelegate <NSObject>
 
 @optional
 

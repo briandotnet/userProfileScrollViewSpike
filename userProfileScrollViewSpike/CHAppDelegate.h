@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class CHUserProfileViewController;
+@class CHPagedDetailsViewController;
 
 @interface CHAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) CHUserProfileViewController *viewController;
+@property (strong, nonatomic) CHPagedDetailsViewController *viewController;
 
 @end

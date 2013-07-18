@@ -13,6 +13,11 @@
 
 @property (nonatomic, weak) CHUserProfileViewModel *userProfile;
 
+#pragma mark - UI elements
+@property (nonatomic, readonly, strong) UIImageView *profileImageView;
+@property (nonatomic, readonly, strong) UILabel     *userNameLabel;
+@property (nonatomic, readonly, strong) UILabel     *userJobTitleLabel;
+
 - (id)initWithUserProfile:(CHUserProfileViewModel *)theUserProfile;
 
 @end

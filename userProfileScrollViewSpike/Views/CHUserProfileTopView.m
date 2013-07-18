@@ -10,10 +10,11 @@
 #import "UIView+FLKAutoLayout.h"
 
 @interface CHUserProfileTopView (){
-    UIImageView *profileImageView;
-    UILabel     *userNameLabel;
-    UILabel     *userJobTitleLabel;
 }
+
+@property (nonatomic, readwrite, strong) UIImageView *profileImageView;
+@property (nonatomic, readwrite, strong) UILabel     *userNameLabel;
+@property (nonatomic, readwrite, strong) UILabel     *userJobTitleLabel;
 
 @end
 
@@ -29,34 +30,34 @@ static float const k_fontSizeMedium = 12;
         // Initialization code
         self.backgroundColor = [UIColor blueColor];
         
-        profileImageView = [[UIImageView alloc] init];
-        profileImageView.backgroundColor = [UIColor brownColor];
-        profileImageView.image = [UIImage imageNamed:theUserProfile.profileImageURL];
+        self.profileImageView = [[UIImageView alloc] init];
+        self.profileImageView.backgroundColor = [UIColor brownColor];
+        self.profileImageView.image = [UIImage imageNamed:theUserProfile.profileImageURL];
         
-        userNameLabel = [[UILabel alloc] init];
-        userNameLabel.text = [NSString stringWithFormat:@"%@ %@", theUserProfile.userFirstName, theUserProfile.userLastName];
-        userNameLabel.font = [UIFont boldSystemFontOfSize:k_fontSizeLarge];
-        userNameLabel.textColor = [UIColor whiteColor];
-        userNameLabel.backgroundColor = [UIColor clearColor];
+        self.userNameLabel = [[UILabel alloc] init];
+        self.userNameLabel.text = [NSString stringWithFormat:@"%@ %@", theUserProfile.userFirstName, theUserProfile.userLastName];
+        self.userNameLabel.font = [UIFont boldSystemFontOfSize:k_fontSizeLarge];
+        self.userNameLabel.textColor = [UIColor whiteColor];
+        self.userNameLabel.backgroundColor = [UIColor clearColor];
         
-        userJobTitleLabel  = [[UILabel alloc] init];
-        userJobTitleLabel.text = theUserProfile.jobTitle;
-        userJobTitleLabel.font = [UIFont systemFontOfSize:k_fontSizeMedium];
-        userJobTitleLabel.textColor = [UIColor whiteColor];
-        userJobTitleLabel.backgroundColor = [UIColor clearColor];
+        self.userJobTitleLabel  = [[UILabel alloc] init];
+        self.userJobTitleLabel.text = theUserProfile.jobTitle;
+        self.userJobTitleLabel.font = [UIFont systemFontOfSize:k_fontSizeMedium];
+        self.userJobTitleLabel.textColor = [UIColor whiteColor];
+        self.userJobTitleLabel.backgroundColor = [UIColor clearColor];
         
-        [self addSubview:profileImageView];
-        [self addSubview:userNameLabel];
-        [self addSubview:userJobTitleLabel];
+        [self addSubview:self.profileImageView];
+        [self addSubview:self.userNameLabel];
+        [self addSubview:self.userJobTitleLabel];
 
-        [profileImageView alignCenterXWithView:self predicate:nil];
-        [profileImageView alignTopEdgeWithView:self predicate:@"30"];
-        [profileImageView constrainHeight:@"80"];
-        [profileImageView constrainWidth:@"80"];
-        [userNameLabel alignCenterXWithView:self predicate:nil];
-        [userNameLabel constrainTopSpaceToView:profileImageView predicate:@"10"];
-        [userJobTitleLabel alignCenterXWithView:self predicate:nil];
-        [userJobTitleLabel constrainTopSpaceToView:userNameLabel predicate:@"5"];
+        [self.profileImageView alignCenterXWithView:self predicate:nil];
+        [self.profileImageView alignTopEdgeWithView:self predicate:@"30"];
+        [self.profileImageView constrainHeight:@"80"];
+        [self.profileImageView constrainWidth:@"80"];
+        [self.userNameLabel alignCenterXWithView:self predicate:nil];
+        [self.userNameLabel constrainTopSpaceToView:self.profileImageView predicate:@"10"];
+        [self.userJobTitleLabel alignCenterXWithView:self predicate:nil];
+        [self.userJobTitleLabel constrainTopSpaceToView:self.userNameLabel predicate:@"5"];
         
         [self constrainHeight:@"==180"];
 

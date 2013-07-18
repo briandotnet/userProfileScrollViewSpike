@@ -8,7 +8,7 @@
 
 #import "CHAppDelegate.h"
 
-#import "CHUserProfileViewController.h"
+#import "CHPagedDetailsViewController.h"
 #import "CHUserProfileViewModel.h"
 #import "CHUserProfileTopView.h"
 #import "CHSimpleTableViewController.h"
@@ -41,10 +41,7 @@
     tableviewController2 = [[CHSimpleTableViewController alloc] init];
     tableviewController3 = [[CHSimpleTableViewController alloc] init];
 
-    
-    
-    
-    self.viewController = [[CHUserProfileViewController alloc] initWithUserProfileViewModel:userProfile viewControllerForTop:topViewController viewControllersForPagedDetails:[NSArray arrayWithObjects:tableviewController1, tableviewController2, tableviewController3, nil]];
+    self.viewController = [[CHPagedDetailsViewController alloc] initWithViewControllerForTop:topViewController viewControllersForPagedDetails:[NSArray arrayWithObjects:tableviewController1, tableviewController2, tableviewController3, nil]];
 
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
