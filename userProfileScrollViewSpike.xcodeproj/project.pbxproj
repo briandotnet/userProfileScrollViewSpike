@@ -14,6 +14,7 @@
 		D14E912617948551000ADE56 /* iPhoneUPView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D14E912517948551000ADE56 /* iPhoneUPView.xib */; };
 		D14E912D1794BDE7000ADE56 /* smile.png in Resources */ = {isa = PBXBuildFile; fileRef = D14E912B1794BDE7000ADE56 /* smile.png */; };
 		D14E912E1794BDE7000ADE56 /* smile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D14E912C1794BDE7000ADE56 /* smile@2x.png */; };
+		D167E741179863DA00E78DC2 /* UIViewController+Scroll.m in Sources */ = {isa = PBXBuildFile; fileRef = D167E740179863DA00E78DC2 /* UIViewController+Scroll.m */; };
 		D17BDDFE1797608700E7840A /* CHUserProfileViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D17BDDF41797608700E7840A /* CHUserProfileViewModel.m */; };
 		D17BDDFF1797608700E7840A /* CHSimpleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D17BDDF81797608700E7840A /* CHSimpleTableViewController.m */; };
 		D17BDE001797608700E7840A /* CHUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D17BDDFA1797608700E7840A /* CHUserProfileViewController.m */; };
@@ -55,6 +56,8 @@
 		D14E912517948551000ADE56 /* iPhoneUPView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = iPhoneUPView.xib; sourceTree = "<group>"; };
 		D14E912B1794BDE7000ADE56 /* smile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smile.png; sourceTree = "<group>"; };
 		D14E912C1794BDE7000ADE56 /* smile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smile@2x.png"; sourceTree = "<group>"; };
+		D167E73F179863DA00E78DC2 /* UIViewController+Scroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Scroll.h"; sourceTree = "<group>"; };
+		D167E740179863DA00E78DC2 /* UIViewController+Scroll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Scroll.m"; sourceTree = "<group>"; };
 		D17BDDF31797608700E7840A /* CHUserProfileViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUserProfileViewModel.h; sourceTree = "<group>"; };
 		D17BDDF41797608700E7840A /* CHUserProfileViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHUserProfileViewModel.m; sourceTree = "<group>"; };
 		D17BDDF71797608700E7840A /* CHSimpleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHSimpleTableViewController.h; sourceTree = "<group>"; };
@@ -172,6 +175,8 @@
 		D17BDE031797657E00E7840A /* Additions */ = {
 			isa = PBXGroup;
 			children = (
+				D167E73F179863DA00E78DC2 /* UIViewController+Scroll.h */,
+				D167E740179863DA00E78DC2 /* UIViewController+Scroll.m */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
@@ -380,6 +385,7 @@
 				D17BDDFF1797608700E7840A /* CHSimpleTableViewController.m in Sources */,
 				D17BDE001797608700E7840A /* CHUserProfileViewController.m in Sources */,
 				D17BDE011797608700E7840A /* CHUserProfileTopView.m in Sources */,
+				D167E741179863DA00E78DC2 /* UIViewController+Scroll.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

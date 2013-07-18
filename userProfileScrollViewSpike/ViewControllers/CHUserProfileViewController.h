@@ -1,5 +1,5 @@
 //
-//  CHViewController.h
+//  CHUserProfileViewController.h
 //  userProfileScrollViewSpike
 //
 //  Created by Brian Ge on 7/12/13.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CHUserProfileViewModel.h"
-#import "CHSimpleTableViewController.h"
+#import "UIViewController+Scroll.h"
 
 @interface CHUserProfileViewController : UIViewController <UIScrollViewDelegate, CHTableViewScrollDelegate>{
     

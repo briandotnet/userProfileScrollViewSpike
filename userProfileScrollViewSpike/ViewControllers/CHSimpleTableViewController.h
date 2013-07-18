@@ -7,13 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CHTableViewScrollDelegate.h"
 
 @interface CHSimpleTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>{
 
 }
 
-@property (nonatomic, weak) NSObject<CHTableViewScrollDelegate> *scrollDelegate;
 @property (nonatomic, strong) UITableView *tableView;
 
 @end

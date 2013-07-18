@@ -11,6 +11,7 @@
 #import "CHUserProfileViewController.h"
 #import "CHUserProfileViewModel.h"
 #import "CHUserProfileTopView.h"
+#import "CHSimpleTableViewController.h"
 
 @implementation CHAppDelegate
 

@@ -131,12 +131,5 @@
 }
 
 
-#pragma mark - UIScrollViewDelegate methods
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if (self.scrollDelegate && [self.scrollDelegate respondsToSelector:@selector(tableViewDidScroll:)]) {
-        [self.scrollDelegate tableViewDidScroll:scrollView];
-    }
-}
 
 @end
