@@ -14,8 +14,8 @@
 }
 @property (nonatomic, readwrite, strong) UIPageControl *pageControl;
 @property (nonatomic, readwrite, strong) UIScrollView *detailsPagedScrollView;
-@property (nonatomic, readwrite, strong) UIView *userDetailsPagedContentView;
-@property (nonatomic, readwrite, strong) UIViewController *topViewController;
+@property (nonatomic, readwrite, strong) UIView *userDetailsPagedContentView; // put this in a category
+@property (nonatomic, readwrite, strong) UIViewController *headerViewController;
 @property (nonatomic, readwrite, strong) NSArray<CHScrollableViewController> *detailsViewControllers;
 
 @end
@@ -27,7 +27,7 @@
     self = [self init];
     if (self) {
 //        self.userProfile = theUserProfile;
-        self.topViewController = theTopViewController;
+        self.headerViewController = theTopViewController;
         self.detailsViewControllers = theDetailsViewControllers;
     }
     return self;
@@ -47,12 +47,12 @@
     CGFloat currentViewHeight = self.view.frame.size.height;
     int numberOfUserDetailsPages = self.detailsViewControllers.count;
     
-    [self addChildViewController:self.topViewController];
-    [self.view addSubview:self.topViewController.view];
-    [self.topViewController didMoveToParentViewController:self];
+    [self addChildViewController:self.headerViewController];
+    [self.view addSubview:self.headerViewController.view];
+    [self.headerViewController didMoveToParentViewController:self];
     
-    [self.topViewController.view alignTopEdgeWithView:self.view predicate:@"0"];
-    [self.topViewController.view alignLeading:@"0" trailing:@"0" toView:self.view];
+    [self.headerViewController.view alignTopEdgeWithView:self.view predicate:@"0"];
+    [self.headerViewController.view alignLeading:@"0" trailing:@"0" toView:self.view];
     
     // userSummaryView is using autolayout constrain for its height, and the height before rendering is 0, probably should redesign it to use frame directly
     CGFloat userSummaryViewHeight = 180.0;//CGRectGetHeight(topViewController.view.bounds);
@@ -76,7 +76,7 @@
         UIViewController<CHScrollableViewController> *viewController = [self.detailsViewControllers objectAtIndex:i];
         [self addChildViewController:viewController];
         [viewController didMoveToParentViewController:self];
-        viewController.scrollDelegate = self;
+        viewController.scrollDelegate = self; // use KVO to observe the bounds of child view 
         [self.userDetailsPagedContentView addSubview:viewController.view];
         viewController.view.frame = CGRectMake(currentViewWidth * i, 0, currentViewWidth, self.userDetailsPagedContentView.bounds.size.height);
         viewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -116,7 +116,7 @@
 
 #pragma mark - TableViewScrollDelegate 
 -(void) tableViewDidScroll:(UIScrollView *)scrollView{
-    [self scrollView:scrollView needToRelayoutTopView:self.topViewController.view andBottomView:self.detailsPagedScrollView];
+    [self scrollView:scrollView needToRelayoutTopView:self.headerViewController.view andBottomView:self.detailsPagedScrollView];
 }
 
 #pragma mark - private helper method
