@@ -12,6 +12,7 @@
 #import "CHUserProfileViewModel.h"
 #import "CHUserProfileTopView.h"
 #import "CHSimpleTableViewController.h"
+#import "CHPagedDetailsViewTestControlPanel.h"
 
 @implementation CHAppDelegate
 
@@ -40,10 +41,22 @@
     tableviewController1 = [[CHSimpleTableViewController alloc] init];
     tableviewController2 = [[CHSimpleTableViewController alloc] init];
     tableviewController3 = [[CHSimpleTableViewController alloc] init];
+    
+    UIViewController *newViewController = [[UIViewController alloc] init];
+    newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    newViewController.view.backgroundColor = [CHUtils randomColor];
 
-    self.viewController = [[CHPagedDetailsViewController alloc] initWithViewControllerForTop:topViewController viewControllersForPagedDetails:[NSArray arrayWithObjects:tableviewController1, tableviewController2, tableviewController3, nil]];
+    CHPagedDetailsViewController *pagedDetailsViewController = [[CHPagedDetailsViewController alloc] initWithViewControllerForTop:topViewController viewControllersForPagedDetails:[NSArray arrayWithObjects: tableviewController1, tableviewController2, newViewController, tableviewController3, nil]];
+    
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:pagedDetailsViewController];
 
-    self.window.rootViewController = self.viewController;
+    self.window.rootViewController = self.navigationController;
+
+    // inject testing controls
+    CHPagedDetailsViewTestControlPanel *testPanel = [[CHPagedDetailsViewTestControlPanel alloc] init];
+    testPanel.testingTarget = pagedDetailsViewController;
+    [pagedDetailsViewController.view addSubview:testPanel];
+    
     [self.window makeKeyAndVisible];
     return YES;
 }

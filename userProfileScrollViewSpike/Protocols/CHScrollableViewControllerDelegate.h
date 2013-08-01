@@ -12,6 +12,6 @@
 
 @optional
 
-- (void)tableViewDidScroll:(UIScrollView *)scrollView;
+- (void)scrollableViewDidScroll:(UIScrollView *)scrollView;
 
 @end

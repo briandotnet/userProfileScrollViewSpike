@@ -14,15 +14,17 @@
 
 @implementation CHSimpleTableViewController
 
-@synthesize tableView = _tableView;
+//@synthesize tableView = _tableView;
 
 - (id)init
 {
     self = [super init];
     if (self) {
         // Custom initialization
-        self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.tableView.backgroundView = nil;
+        self.tableView.backgroundColor = [CHUtils randomColor];
         self.tableView.dataSource = self;
         self.tableView.delegate = self;
         [self.view addSubview: self.tableView];
@@ -53,13 +55,13 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 5;
+    return arc4random() % 3 + 3; // 3 - 5 sections
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 10;
+    return arc4random() % 5 + 3; // 3 - 7 rows
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -133,10 +135,9 @@
 #pragma mark - UIScrollViewDelegate methods
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if (self.scrollDelegate && [self.scrollDelegate respondsToSelector:@selector(tableViewDidScroll:)]) {
-        [self.scrollDelegate tableViewDidScroll:scrollView];
+    if (self.scrollDelegate && [self.scrollDelegate respondsToSelector:@selector(scrollableViewDidScroll:)]) {
+        [self.scrollDelegate scrollableViewDidScroll:scrollView];
     }
 }
-
 
 @end

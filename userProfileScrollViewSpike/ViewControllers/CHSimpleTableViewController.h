@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CHScrollableViewController.h"
+#import "CHUtils.h"
 
 @interface CHSimpleTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, CHScrollableViewController>{
 

@@ -8,6 +8,7 @@
 
 #import "CHUserProfileTopView.h"
 #import "UIView+FLKAutoLayout.h"
+#import "CHUtils.h"
 
 @interface CHUserProfileTopView (){
 }
@@ -28,11 +29,10 @@ static float const k_fontSizeMedium = 12;
     self = [super init];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor blueColor];
+        self.backgroundColor = [CHUtils randomColor];
         
         self.profileImageView = [[UIImageView alloc] init];
-        self.profileImageView.backgroundColor = [UIColor brownColor];
-        self.profileImageView.image = [UIImage imageNamed:theUserProfile.profileImageURL];
+        self.profileImageView.image = [CHUtils imageWithColor:[CHUtils randomColor]];//[UIImage imageNamed:theUserProfile.profileImageURL];
         
         self.userNameLabel = [[UILabel alloc] init];
         self.userNameLabel.text = [NSString stringWithFormat:@"%@ %@", theUserProfile.userFirstName, theUserProfile.userLastName];
@@ -60,6 +60,7 @@ static float const k_fontSizeMedium = 12;
         [self.userJobTitleLabel constrainTopSpaceToView:self.userNameLabel predicate:@"5"];
         
         [self constrainHeight:@"==180"];
+        [self constrainWidth:@">=320"];
 
     }
     return self;
