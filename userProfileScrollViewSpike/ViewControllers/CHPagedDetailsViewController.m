@@ -8,28 +8,32 @@
 
 #import "CHPagedDetailsViewController.h"
 #import "CHPagedDetailsViewController+Internal.h"
-#import "UIView+FLKAutoLayout.h"
 
 @interface CHPagedDetailsViewController (){
 }
 @property (nonatomic, readwrite, strong) UIPageControl *pageControl;
 @property (nonatomic, readwrite, strong) UIScrollView *detailsPagedScrollView;
-
+@property (nonatomic, readwrite, strong) NSArray *detailsViewControllers;
 
 @end
 
 @implementation CHPagedDetailsViewController{
+    // since pageController is linked to scrollViewDidScroll event, during rotation where view size is changed, pageControl.currentPage will be changed. We needed an ivar to keep track of current page.
+    NSInteger pageIndexBeforeRotation;
 }
-static const CGFloat animationDurationAnimated = 0.5f;
+static const CGFloat animationDurationAnimated = 0.3f;
 static const CGFloat animationDurationNotAnimated = 0.0f;
+// TODO: get rid of fixed header view height
 static const CGFloat kHeaderViewHeight = 180.0f;
+// TODO: get rid of fixed page control height;
 static const CGFloat kPageControlHeight = 20.0f;
+static NSString *kContentOffsetKeyPath = @"contentOffset";
 
-- (id)initWithViewControllerForTop:(UIViewController *)theTopViewController viewControllersForPagedDetails:(NSArray<CHScrollableViewController> *)theDetailsViewControllers{
+- (id)initWithViewControllerForHeader:(UIViewController *)headerViewController viewControllersForPagedDetails:(NSArray<CHScrollableViewController> *)detailsViewControllers{
     self = [self init];
     if (self) {
-        _detailsViewControllers = theDetailsViewControllers;
-        _headerViewController = theTopViewController;
+        _detailsViewControllers = detailsViewControllers;
+        _headerViewController = headerViewController;
     }
     return self;
 }
@@ -37,31 +41,27 @@ static const CGFloat kPageControlHeight = 20.0f;
 -(void)loadView{
     [super loadView];
     
-    CGFloat currentViewWidth = self.view.frame.size.width;
-    CGFloat currentViewHeight = self.view.frame.size.height;
+    CGFloat currentViewWidth = CGRectGetWidth(self.view.frame);
+    CGFloat currentViewHeight = CGRectGetHeight(self.view.frame);
     NSInteger numberOfUserDetailsPages = _detailsViewControllers.count;
-//    CGFloat navBarHeight = self.navigationController ? CGRectGetHeight(self.navigationController.navigationBar.frame) : 0.0f;
     
     self.headerContentView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, currentViewWidth, kHeaderViewHeight + kPageControlHeight)];
     self.headerContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.headerContentView.backgroundColor = [UIColor redColor];
     [self.view addSubview:self.headerContentView];
-    
-    [self addChildViewController: self.headerViewController];
-    [self.headerContentView addSubview:self.headerViewController.view];
-    //not sure why setting frame and autoresizingMasks directly causes resize issue, have to use autolayout here, maybe because the headerview is constructed with autolayout?
-//    self.headerViewController.view.frame = CGRectMake(0.0f, 0.0f, currentViewWidth, kHeaderViewHeight);
-//    self.headerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [self.headerViewController.view alignTop:@"0" leading:@"0" bottom:@"-20" trailing:@"0" toView:self.headerContentView];
-    
-    [self.headerViewController didMoveToParentViewController:self];
-    
+    if (self.headerViewController) {
+        [self addChildViewController: self.headerViewController];
+        [self.headerContentView addSubview:self.headerViewController.view];
+        self.headerViewController.view.frame = CGRectMake(0.0f, 0.0f, currentViewWidth, kHeaderViewHeight);
+        self.headerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        [self.headerViewController didMoveToParentViewController:self];
+    }
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0.0f, kHeaderViewHeight, currentViewWidth, kPageControlHeight)];
     self.pageControl.userInteractionEnabled = NO;
     self.pageControl.currentPage = 0;
     [self.headerContentView addSubview:self.pageControl];
     
-    self.detailsPagedScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, CGRectGetHeight(self.headerContentView.frame), currentViewWidth, currentViewHeight - kHeaderViewHeight)];
+    self.detailsPagedScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, CGRectGetHeight(self.headerContentView.frame), currentViewWidth, currentViewHeight - CGRectGetHeight(self.headerContentView.frame))];
     self.detailsPagedScrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.detailsPagedScrollView.delegate = self;
     self.detailsPagedScrollView.pagingEnabled = YES;
@@ -69,7 +69,7 @@ static const CGFloat kPageControlHeight = 20.0f;
     self.detailsPagedScrollView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:self.detailsPagedScrollView];
     
-    self.detailsPagedContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, numberOfUserDetailsPages * currentViewWidth, self.detailsPagedScrollView.bounds.size.height)];
+    self.detailsPagedContentView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, numberOfUserDetailsPages * currentViewWidth, self.detailsPagedScrollView.bounds.size.height)];
     self.detailsPagedContentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self.detailsPagedScrollView addSubview:self.detailsPagedContentView];
     
@@ -78,45 +78,51 @@ static const CGFloat kPageControlHeight = 20.0f;
         [self addChildViewController:viewController];
         [viewController didMoveToParentViewController:self];
         if([viewController conformsToProtocol:@protocol(CHScrollableViewController)]){
-            ((UIViewController<CHScrollableViewController>*)viewController).scrollDelegate = self;
-            // use KVO to observe the bounds of child view
+            UIViewController<CHScrollableViewController> *scrollableViewController = (UIViewController<CHScrollableViewController>*)viewController;
+            [scrollableViewController.mainScrollView addObserver:self forKeyPath:kContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:nil];
         }
         [self.detailsPagedContentView addSubview:viewController.view];
-        viewController.view.frame = CGRectMake(currentViewWidth * i, 0, currentViewWidth, CGRectGetHeight(self.detailsPagedContentView.bounds));
+        viewController.view.frame = CGRectMake(currentViewWidth * i, 0.0f, currentViewWidth, CGRectGetHeight(self.detailsPagedContentView.bounds));
         viewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     }
     
-    
+    [self.view bringSubviewToFront:self.headerContentView];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
     self.pageControl.numberOfPages = self.detailsViewControllers.count;
-
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    // seems like there is an issue setting the content size before this point when navigation bar is present
-    _detailsPagedScrollView.contentSize = _detailsPagedContentView.bounds.size;
+    // seems like there is an issue setting the contentSize before this point when navigation bar is present
+    self.detailsPagedScrollView.contentSize = self.detailsPagedContentView.bounds.size;
 }
 
--(void)viewDidAppear:(BOOL)animated{
-
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+        pageIndexBeforeRotation = self.pageControl.currentPage;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    NSInteger currentPage = self.pageControl.currentPage;
     [self resizeUserDetailsPagesWithScrollViewSize:self.detailsPagedScrollView.bounds.size];
-    // after resize, we need to resume correct scrolling position
-    [self.detailsPagedScrollView setContentOffset:CGPointMake(currentPage * CGRectGetWidth(self.detailsPagedScrollView.bounds), 0.0f) animated:YES];
+
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+
+// TODO: remove all details views and viewControllers that are not previouse, current or next from self.view and self.
+}
+
+-(void)dealloc{
+    // when PagedDetailsViewController gets deallocated, remove all observers
+    for (UIViewController *detailsViewController in self.detailsViewControllers) {
+        if ([detailsViewController conformsToProtocol:@protocol(CHScrollableViewController)]) {
+            [((UIViewController<CHScrollableViewController> *)detailsViewController).mainScrollView removeObserver:self forKeyPath:kContentOffsetKeyPath];
+        }
+    }
+    
 }
 
 #pragma mark - customer setter and getter methods
@@ -126,12 +132,49 @@ static const CGFloat kPageControlHeight = 20.0f;
         return;
     }
     else {
-        [self displayNewHeaderViewController:headerViewController animated:YES];
+        [self setHeaderViewController:headerViewController animated:NO];
     }
 }
 
 #pragma mark - Public Methods
-- (void)insertDetailsViewController:(UIViewController *)detailsViewController atIndex:(NSInteger)index animated:(BOOL)animated{
+
+-(void)setHeaderViewController:(UIViewController*) headerViewController animated:(BOOL)animated{
+    CGFloat animationDuration = animated ? animationDurationAnimated : animationDurationNotAnimated;
+    if(headerViewController){
+        if ([self.delegate respondsToSelector:@selector(pagedDetailsViewController:willReplaceHeaderViewController:withNewHeaderViewController:)]) {
+            [self.delegate pagedDetailsViewController:self willReplaceHeaderViewController:self.headerViewController withNewHeaderViewController:headerViewController];
+        }
+        // add newHeaderViewController and its view
+        [self addChildViewController: headerViewController];
+        headerViewController.view.alpha = 0.0f;
+        [self.headerContentView addSubview:headerViewController.view];
+        headerViewController.view.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.headerContentView.frame), kHeaderViewHeight);
+        headerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+
+        [headerViewController didMoveToParentViewController:self];
+    }
+    
+    UIViewController *oldHeaderViewController = self.headerViewController;
+    _headerViewController = headerViewController;
+    [UIView animateWithDuration:animationDuration
+                     animations:^{
+                         oldHeaderViewController.view.alpha = 0.0f;
+                         headerViewController.view.alpha = 1.0f;
+                     }
+                     completion:^(BOOL finished) {
+                         [oldHeaderViewController willMoveToParentViewController:nil];
+                         [oldHeaderViewController.view removeFromSuperview];
+                         [oldHeaderViewController removeFromParentViewController];
+                         if ([self.delegate respondsToSelector:@selector(pagedDetailsViewController:didReplaceHeaderViewController:withNewHeaderViewController:)]) {
+                             [self.delegate pagedDetailsViewController:self didReplaceHeaderViewController:oldHeaderViewController withNewHeaderViewController:self.headerViewController];
+                         }
+                     }];
+}
+
+- (NSInteger)insertDetailsViewController:(UIViewController *)detailsViewController atIndex:(NSInteger)index animated:(BOOL)animated{
+    if(detailsViewController == nil){
+        return -1;
+    }
     // constrain index to between 0 and page count
     if(index < 0){
         index = 0;
@@ -139,38 +182,53 @@ static const CGFloat kPageControlHeight = 20.0f;
     else if( index > self.detailsViewControllers.count){
         index = self.detailsViewControllers.count;
     }
-
+    if ([self.delegate respondsToSelector:@selector(pagedDetailsViewController:willInsertPageAtIndex:)]) {
+        [self.delegate pagedDetailsViewController:self willInsertPageAtIndex:index];
+    }
     NSMutableArray *detailsViewControllersMutable = [NSMutableArray arrayWithArray:self.detailsViewControllers];
     [detailsViewControllersMutable insertObject:detailsViewController atIndex:index];
     self.detailsViewControllers = [NSArray arrayWithArray: detailsViewControllersMutable];
     
     [self addChildViewController:detailsViewController];
     if ([detailsViewController conformsToProtocol:@protocol(CHScrollableViewController)]) {
-        ((UIViewController<CHScrollableViewController>*)detailsViewController).scrollDelegate = self;
+        UIViewController<CHScrollableViewController> *scrollableViewController = (UIViewController<CHScrollableViewController>*)detailsViewController;
+
+        [scrollableViewController.mainScrollView addObserver:self forKeyPath:kContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:nil];
     }
-//    [self.detailsPagedContentView addSubview:detailsViewController.view];
     [detailsViewController didMoveToParentViewController:self];
     
     [self makeSpaceForNewDetailsPageAtIndex:index animated:animated completion:^(BOOL finished) {
         [self slideUpNewDetailsPage:detailsViewController.view atIndex:index animated:animated completion:^(BOOL finished) {
-
+            if ([self.delegate respondsToSelector:@selector(pagedDetailsViewController:didInsertPageAtIndex:)]) {
+                [self.delegate pagedDetailsViewController:self didInsertPageAtIndex:index];
+            }
         }];
     }];
-
+    
+    return index;
 }
 
 - (void)removeDetailsViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated{
     // do nothing if index is out of range
-    if(index < 0 || index >= _detailsViewControllers.count){
+    if(index < 0 || index >= self.detailsViewControllers.count){
         return;
     }
 
     UIViewController *detailsPageControllerToRemove = (UIViewController *)[self.detailsViewControllers objectAtIndex:index];
+    if ([self.delegate respondsToSelector:@selector(pagedDetailsViewController:willRemovePageAtIndex:)]) {
+        [self.delegate pagedDetailsViewController:self willRemovePageAtIndex:index];
+    }
     [self slideDownDetailsPage:detailsPageControllerToRemove.view atIndex:index animated:animated completion:^(BOOL finished) {
         [self removeSpaceForRemovedDetailsPageAtIndex:index animated:animated completion:^(BOOL finished) {
+            if ([detailsPageControllerToRemove conformsToProtocol:@protocol(CHScrollableViewController)]) {
+                [((UIViewController<CHScrollableViewController> *)detailsPageControllerToRemove).mainScrollView removeObserver:self forKeyPath:kContentOffsetKeyPath];
+            }
             [detailsPageControllerToRemove willMoveToParentViewController:nil];
             [detailsPageControllerToRemove.view removeFromSuperview];
             [detailsPageControllerToRemove removeFromParentViewController];
+            if ([self.delegate respondsToSelector:@selector(pagedDetailsViewController:didRemovePageAtIndex:)]) {
+                    [self.delegate pagedDetailsViewController:self didRemovePageAtIndex:index];
+            }
         }];
     }];
     
@@ -181,49 +239,32 @@ static const CGFloat kPageControlHeight = 20.0f;
 
 #pragma mark - Scroll View Delegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)sender {
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    if ([scrollView isEqual:self.detailsPagedScrollView]) {
+        if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:willBeginScrollFromPageIndex:)])
+            return [self.delegate pagedDetailsViewController:self didInsertPageAtIndex:self.pageControl.currentPage];
+    }
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
-    if([sender isEqual:self.detailsPagedScrollView]){
+    if([scrollView isEqual:self.detailsPagedScrollView]){
         // Update the page when more than 50% of the previous/next page is visible
-        CGFloat pageWidth = self.detailsPagedScrollView.frame.size.width;
-        int page = floor((self.detailsPagedScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+        CGFloat pageWidth = scrollView.frame.size.width;
+        int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
         self.pageControl.currentPage = page;
     }
 }
 
-#pragma mark - TableViewScrollDelegate 
--(void) scrollableViewDidScroll:(UIScrollView *)scrollView{
-    [self scrollView:scrollView needToRelayoutTopView:self.headerContentView andBottomView:self.detailsPagedScrollView];
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    if([scrollView isEqual:self.detailsPagedScrollView]){
+        if ([self.delegate respondsToSelector:@selector(pagedDetailsViewController:didScrollToPageIndex:)]) {
+            return [self.delegate pagedDetailsViewController:self didScrollToPageIndex:self.pageControl.currentPage];
+        }
+    }
 }
 
 #pragma mark - private helper method
-
--(void)displayNewHeaderViewController:(UIViewController*) newHeaderViewController animated:(BOOL)animated{
-    CGFloat animationDuration = animated ? animationDurationAnimated : animationDurationNotAnimated;
-    if(newHeaderViewController){
-        // add newHeaderViewController and its view
-        newHeaderViewController.view.alpha = 0.0f;
-        [self addChildViewController: newHeaderViewController];
-        [self.headerContentView addSubview:newHeaderViewController.view];
-        //not sure why setting frame and autoresizingMasks directly causes resize issue, have to use autolayout here, maybe because the headerview is constructed with autolayout?
-//        newHeaderViewController.view.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.headerContentView.frame), kHeaderViewHeight);
-//        newHeaderViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [newHeaderViewController.view alignTop:@"0" leading:@"0" bottom:@"-20" trailing:@"0" toView:self.headerContentView];
-        [newHeaderViewController didMoveToParentViewController:self];
-    }
-    
-    UIViewController *oldHeaderViewController = self.headerViewController;
-    _headerViewController = newHeaderViewController;
-    [UIView animateWithDuration:animationDuration
-                     animations:^{
-                         oldHeaderViewController.view.alpha = 0.0f;
-                         newHeaderViewController.view.alpha = 1.0f;
-                     } completion:^(BOOL finished) {
-                         [oldHeaderViewController willMoveToParentViewController:nil];
-                         [oldHeaderViewController.view removeFromSuperview];
-                         [oldHeaderViewController removeFromParentViewController];
-                     }];
-}
 
 -(void)makeSpaceForNewDetailsPageAtIndex:(NSInteger)index animated:(BOOL)animated completion:(void (^)(BOOL finished))completion{
     CGFloat widthOfPage = CGRectGetWidth(self.detailsPagedScrollView.bounds);
@@ -314,43 +355,58 @@ static const CGFloat kPageControlHeight = 20.0f;
 -(void)resizeUserDetailsPagesWithScrollViewSize:(CGSize)newSize{
     int numberOfUserDetailsPages = self.detailsViewControllers.count;
     self.detailsPagedContentView.frame = CGRectMake(0.0f, 0.0f, numberOfUserDetailsPages*newSize.width,  newSize.height);
-    self.detailsPagedScrollView.contentSize = self.detailsPagedContentView.bounds.size;
+
     for (int i = 0, count = self.detailsPagedContentView.subviews.count; i < count; i ++) {
         ((UIView *)self.detailsPagedContentView.subviews[i]).frame = CGRectMake(i * newSize.width, 0.0f, newSize.width,  newSize.height);
     }
+    self.detailsPagedScrollView.contentSize = self.detailsPagedContentView.bounds.size;
+    self.detailsPagedScrollView.contentOffset = CGPointMake(pageIndexBeforeRotation * newSize.width, 0);
 }
 
--(void)scrollView:(UIScrollView *)scrollView needToRelayoutTopView:(UIView *)topView andBottomView:(UIView*)bottomView{
-    CGFloat offsetY = scrollView.contentOffset.y;
-
-    // these BOOLs are just for readibility
-    BOOL isPullingDown = offsetY < 0;
-    BOOL isPullingUp = offsetY > 0;
-    BOOL userSummaryViewIsHidden = CGRectGetMaxY(topView.frame) <= 0;
-    BOOL userSummaryViewIsHalfVisible =  (CGRectGetMaxY(topView.frame) > 0) && (CGRectGetMinY(topView.frame) < 0);
-    BOOL userSummaryViewIsFullyVisible = CGRectGetMinY(topView.frame) >= 0;
+-(void)scrollView:(UIScrollView *)scrollView needToRelayoutHeaderView:(UIView *)headerView andDetailsPagedScrollView:(UIScrollView*)detailsPagedScrollView{
     
-    if (userSummaryViewIsHalfVisible || (userSummaryViewIsHidden && isPullingDown ) || (userSummaryViewIsFullyVisible && isPullingUp) ) {
+    CGFloat offsetY = scrollView.contentOffset.y;
+    CGFloat headerContentViewBottomOffset = self.pageControlShouldScrollAway ? 0.0f : CGRectGetHeight(self.pageControl.bounds);
+    // these BOOLs are just for readibility
+    BOOL isPullingDown = offsetY < 0.0f;
+    BOOL isPullingUp = offsetY > 0.0f;
+    BOOL headerViewIsHidden = CGRectGetMaxY(headerView.frame) <= headerContentViewBottomOffset;
+    BOOL headerViewIsHalfVisible =  (CGRectGetMaxY(headerView.frame) > headerContentViewBottomOffset) && (CGRectGetMinY(headerView.frame) < 0.0f);
+    BOOL headerViewIsFullyVisible = CGRectGetMinY(headerView.frame) >= 0.0f;
+
+    if (headerViewIsHalfVisible || (headerViewIsHidden && isPullingDown ) || (headerViewIsFullyVisible && isPullingUp)) {
         
-        // shift the userSummaryView vertical according to the offset
-        CGRect newFrameForTopView = CGRectOffset(topView.frame, 0, -offsetY);
+        // shift the headerView vertical according to the offset
+        CGRect newFrameForTopView = CGRectOffset(headerView.frame, 0.0f, - offsetY);
         
-        // on edge cases, we might overshift the top view, so we snap it to either 0 or negative height.
-        if (offsetY > 0 && newFrameForTopView.origin.y + CGRectGetHeight(newFrameForTopView) < 0) {
-            newFrameForTopView = CGRectMake(0, - CGRectGetHeight(newFrameForTopView), CGRectGetWidth(newFrameForTopView), CGRectGetHeight(newFrameForTopView));
+        // on edge cases, we might overshift the top view, so we snap it to either 0 or -(height-headerContentViewBottomOffset).
+        if (isPullingUp && newFrameForTopView.origin.y + CGRectGetHeight(newFrameForTopView) < headerContentViewBottomOffset) {
+            newFrameForTopView = CGRectMake(0.0f, - (CGRectGetHeight(newFrameForTopView) - headerContentViewBottomOffset), CGRectGetWidth(newFrameForTopView), CGRectGetHeight(newFrameForTopView));
         }
-        if (offsetY < 0 && newFrameForTopView.origin.y > 0) {
-            newFrameForTopView = CGRectMake(0, 0, CGRectGetWidth(newFrameForTopView), CGRectGetHeight(newFrameForTopView));
+        if (isPullingDown && newFrameForTopView.origin.y > 0.0f) {
+            newFrameForTopView = CGRectMake(0.0f, 0.0f, CGRectGetWidth(newFrameForTopView), CGRectGetHeight(newFrameForTopView));
         }
         // take a note of the actual points we shifted the top view vertical
-        float actualYDelta = topView.frame.origin.y - newFrameForTopView.origin.y ;
-        topView.frame = newFrameForTopView;
+        float actualYDelta = headerView.frame.origin.y - newFrameForTopView.origin.y ;
+        headerView.frame = newFrameForTopView;
+        
+        // reset the content offset to 0 so the content in the scorll view doesn't scroll
+        // !Do this before set the frame of any of the super views of the scroll view or contentOffset will be updated twice!
+        scrollView.contentOffset = CGPointZero;
         
         // shift and resize the paging scroll view
-        bottomView.frame = CGRectMake(0, CGRectGetMinY(bottomView.frame) - actualYDelta, CGRectGetWidth(bottomView.frame), CGRectGetHeight(bottomView.frame) + actualYDelta);
-        
-        // reset the content offset to 0 so the content in the scorllview (table view or collection view) doesn't scroll
-        scrollView.contentOffset = CGPointMake(0,0);
+        detailsPagedScrollView.frame = CGRectMake(0.0f, CGRectGetMinY(detailsPagedScrollView.frame) - actualYDelta, CGRectGetWidth(detailsPagedScrollView.frame), CGRectGetHeight(detailsPagedScrollView.frame) + actualYDelta);
+        detailsPagedScrollView.contentSize = CGSizeMake(detailsPagedScrollView.contentSize.width, detailsPagedScrollView.bounds.size.height);
+    }
+}
+
+#pragma - KVO
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    if([object isKindOfClass:[UIScrollView class]] && [keyPath isEqualToString:kContentOffsetKeyPath]){
+        UIScrollView *scrollView = (UIScrollView *)object;
+        if (!CGPointEqualToPoint(scrollView.contentOffset, CGPointZero)) {
+            [self scrollView:scrollView needToRelayoutHeaderView:self.headerContentView andDetailsPagedScrollView:self.detailsPagedScrollView];
+        }
     }
 }
 

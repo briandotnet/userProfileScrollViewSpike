@@ -59,8 +59,8 @@ static float const k_fontSizeMedium = 12;
         [self.userJobTitleLabel alignCenterXWithView:self predicate:nil];
         [self.userJobTitleLabel constrainTopSpaceToView:self.userNameLabel predicate:@"5"];
         
-        [self constrainHeight:@"==180"];
-        [self constrainWidth:@">=320"];
+//        [self constrainHeight:@">=180"];
+//        [self constrainWidth:@">=320"];
 
     }
     return self;

@@ -7,14 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CHScrollableViewControllerDelegate.h"
 
 @protocol CHScrollableViewController <NSObject>
 
-@property (nonatomic, weak) NSObject<CHScrollableViewControllerDelegate> *scrollDelegate;
-
-@required
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView;
+@property (nonatomic, weak) UIScrollView *mainScrollView;
 
 @end

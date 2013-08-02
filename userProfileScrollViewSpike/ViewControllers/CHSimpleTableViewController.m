@@ -14,7 +14,7 @@
 
 @implementation CHSimpleTableViewController
 
-//@synthesize tableView = _tableView;
+@synthesize mainScrollView;
 
 - (id)init
 {
@@ -28,6 +28,7 @@
         self.tableView.dataSource = self;
         self.tableView.delegate = self;
         [self.view addSubview: self.tableView];
+        self.mainScrollView = self.tableView;
     }
     return self;
 }
@@ -130,14 +131,6 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
-}
-
-#pragma mark - UIScrollViewDelegate methods
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if (self.scrollDelegate && [self.scrollDelegate respondsToSelector:@selector(scrollableViewDidScroll:)]) {
-        [self.scrollDelegate scrollableViewDidScroll:scrollView];
-    }
 }
 
 @end

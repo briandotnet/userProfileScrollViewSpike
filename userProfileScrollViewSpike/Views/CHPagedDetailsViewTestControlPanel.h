@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CHPagedDetailsViewController.h"
 
-@interface CHPagedDetailsViewTestControlPanel : UIView
+@interface CHPagedDetailsViewTestControlPanel : UIView <UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField *indexTextField;
 @property (nonatomic, weak) CHPagedDetailsViewController *testingTarget;

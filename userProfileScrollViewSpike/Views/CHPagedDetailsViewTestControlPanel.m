@@ -23,11 +23,13 @@
         UIButton *swapHeaderViewButton;
         UIButton *toggleNavBarButton;
         
-        self.backgroundColor = [UIColor colorWithRed:0.7f green:0.7f blue:0.7f alpha:0.5f];
+        self.backgroundColor = [UIColor colorWithRed:0.7f green:0.7f blue:0.7f alpha:1.0f];
         
         self.indexTextField = [[UITextField alloc] initWithFrame:CGRectMake(5, 5, 140, 20)];
         self.indexTextField.backgroundColor= [UIColor whiteColor];
-        self.indexTextField.text = [NSString stringWithFormat:@"%d", arc4random() % 2];
+        self.indexTextField.text = @"0";
+        self.indexTextField.delegate = self;
+        self.indexTextField.returnKeyType = UIReturnKeyDone;
         
         insertDetailsViewButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         insertDetailsViewButton.frame = CGRectMake(5, 30, 140, 20);
@@ -55,11 +57,17 @@
         [self addSubview:swapHeaderViewButton];
         [self addSubview:toggleNavBarButton];
         
+        self.alpha = 0.7f;
+        
     }
     return self;
 }
 
 #pragma mark - testing methods
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
 
 -(void) testInsertChildViewController{
     UIViewController *newViewController;
@@ -93,12 +101,19 @@
     
     UIViewController *topViewController = [[UIViewController alloc] init];
     topViewController.view = [[CHUserProfileTopView alloc] initWithUserProfile:userProfile];
-    
-    self.testingTarget.headerViewController = topViewController;
+    switch ([self.indexTextField.text integerValue]) {
+        case 0:
+            self.testingTarget.headerViewController = topViewController;
+            break;
+        default:
+            [self.testingTarget setHeaderViewController:topViewController animated:YES];
+            break;
+    }
     [self.indexTextField resignFirstResponder];
 }
 
 -(void) testToggleNavBar{
+    [self.indexTextField resignFirstResponder];
     self.testingTarget.navigationController.navigationBarHidden = !self.testingTarget.navigationController.navigationBarHidden;
 }
 

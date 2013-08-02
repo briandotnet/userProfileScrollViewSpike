@@ -68,7 +68,6 @@
 		D17BDDFA1797608700E7840A /* CHPagedDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHPagedDetailsViewController.m; sourceTree = "<group>"; };
 		D17BDDFC1797608700E7840A /* CHUserProfileTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUserProfileTopView.h; sourceTree = "<group>"; };
 		D17BDDFD1797608700E7840A /* CHUserProfileTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHUserProfileTopView.m; sourceTree = "<group>"; };
-		D17BDE02179760E300E7840A /* CHScrollableViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHScrollableViewControllerDelegate.h; sourceTree = "<group>"; };
 		D190FB721790B46100B65FA5 /* userProfileScrollViewSpike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = userProfileScrollViewSpike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D190FB751790B46100B65FA5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D190FB771790B46100B65FA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -163,7 +162,6 @@
 			isa = PBXGroup;
 			children = (
 				D167E7421798926F00E78DC2 /* CHScrollableViewController.h */,
-				D17BDE02179760E300E7840A /* CHScrollableViewControllerDelegate.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
