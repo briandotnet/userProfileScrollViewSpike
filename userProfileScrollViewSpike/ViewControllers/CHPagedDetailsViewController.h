@@ -22,14 +22,49 @@
 
 @optional
 
-// TODO: add vertical scroll delegate methods
+// TODO: test all delegate methods
+
+/** Sent to the receiver when the header view scrolled with the paged detail view.
+ 
+ @param pagedDetailsViewController  The paged details view controller sending this message.
+ @param headerView                  The header view that scrolled.
+ */
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController headerViewDidScroll:(UIView*)headerView;
+
+/** Sent to the receiver when the header view will become hidden off screen.
+ 
+ @param pagedDetailsViewController  The paged details view controller sending this message.
+ @param headerView                  The header view that will become hidden.
+ */
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController headerViewWillBecomeHidden:(UIView*)headerView;
+
+/** Sent to the receiver when the header view did become hidden off screen.
+ 
+ @param pagedDetailsViewController  The paged details view controller sending this message.
+ @param headerView                  The header view that did become hidden.
+ */
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController headerViewDidBecomeHidden:(UIView*)headerView;
+
+/** Sent to the receiver when the header view will become fully visible.
+ 
+ @param pagedDetailsViewController  The paged details view controller sending this message.
+ @param headerView                  The header view that will become fully visible.
+ */
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController headerViewWillBecomeFullyVisible:(UIView*)headerView;
+
+/** Sent to the receiver when the header view did become fully visible.
+ 
+ @param pagedDetailsViewController  The paged details view controller sending this message.
+ @param headerView                  The header view that did become fully visible.
+ */
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController headerViewDidBecomeFullyVisible:(UIView*)headerView;
 
 /** Sent to the receiver when the paged details scroll view will begin to scroll.
  
  @param pagedDetailsViewController  The paged details view controller sending this message.
  @param fromPageIndex               The page index the paged scroll view will scrol away from.
  */
-- (void)pagedDetailsViewController:(CHPagedDetailsViewController *)pagedDetailsViewController willBeginScrollFromPageIndex:(NSInteger) fromPageIndex;
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController willBeginScrollFromPageIndex:(NSInteger) fromPageIndex;
 
 /** Sent to the receiver when the paged details scroll view has stopped scrolling, and the 
  current page index after the scolling has stopped.
@@ -37,35 +72,35 @@
  @param pagedDetailsViewController  The paged details view controller sending this message.
  @param toPageIndex                 The page index the paged scroll view has scrolled to.
  */
-- (void)pagedDetailsViewController:(CHPagedDetailsViewController *)pagedDetailsViewController didScrollToPageIndex:(NSInteger) toPageIndex;
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController didScrollToPageIndex:(NSInteger) toPageIndex;
 
 /** Sent to the receiver when a details page view controller indicated by the index will be removed.
  
  @param pagedDetailsViewController  The paged details view controller sending this message.
  @param indexOfPageToRemove         The index of the page to be removed.
  */
-- (void)pagedDetailsViewController:(CHPagedDetailsViewController *)pagedDetailsViewController willRemovePageAtIndex:(NSInteger)indexOfPageToRemove;
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController willRemovePageAtIndex:(NSInteger)indexOfPageToRemove;
 
 /** Sent to the receiver when a details page view controller indicated by the index has been removed.
  
  @param pagedDetailsViewController  The paged details view controller sending this message.
  @param indexOfPageRemoved          The index of the removed page before it has been removed.
  */
-- (void)pagedDetailsViewController:(CHPagedDetailsViewController *)pagedDetailsViewController didRemovePageAtIndex:(NSInteger)indexOfPageRemoved;
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController didRemovePageAtIndex:(NSInteger)indexOfPageRemoved;
 
 /** Sent to the receiver when a view controller will be inserted at the indicated index as a new details page.
  
  @param pagedDetailsViewController  The paged details view controller sending this message.
  @param indexOfPageToInsert         The index of the page to be inserted at.
  */
-- (void)pagedDetailsViewController:(CHPagedDetailsViewController *)pagedDetailsViewController willInsertPageAtIndex:(NSInteger)indexOfPageToInsert;
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController willInsertPageAtIndex:(NSInteger)indexOfPageToInsert;
 
 /** Sent to the receiver when a view controller has been inserted at the indicated index as a new details page.
  
  @param pagedDetailsViewController  The paged details view controller sending this message.
  @param indexOfPageInserted         The index of the inserted page after it has been insterted.
  */
-- (void)pagedDetailsViewController:(CHPagedDetailsViewController *)pagedDetailsViewController didInsertPageAtIndex:(NSInteger)indexOfPageInserted;
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController didInsertPageAtIndex:(NSInteger)indexOfPageInserted;
 
 /** Sent to the receiver when the current header view controller will be replaced by a new header view controller.
  
@@ -74,7 +109,7 @@
  @param newHeaderViewController     The new header view controller.
  @param animated                    The replacement is animated or not
  */
-- (void)pagedDetailsViewController:(CHPagedDetailsViewController *)pagedDetailsViewController willReplaceHeaderViewController:(UIViewController *)currentHeaderViewController withNewHeaderViewController:(UIViewController*)newHeaderViewController animated:(BOOL)animated;
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController willReplaceHeaderViewController:(UIViewController*)currentHeaderViewController withNewHeaderViewController:(UIViewController*)newHeaderViewController animated:(BOOL)animated;
 
 /** Sent to the receiver when the current header view controller has been replaced by a new header view controller.
  
@@ -83,7 +118,7 @@
  @param newHeaderViewController      The new header view controller.
  @param animated                    The replacement is animated or not
  */
-- (void)pagedDetailsViewController:(CHPagedDetailsViewController *)pagedDetailsViewController didReplaceHeaderViewController:(UIViewController *)replacedHeaderViewController withNewHeaderViewController:(UIViewController*)newHeaderViewController animated:(BOOL)animated;
+- (void)pagedDetailsViewController:(CHPagedDetailsViewController*)pagedDetailsViewController didReplaceHeaderViewController:(UIViewController*)replacedHeaderViewController withNewHeaderViewController:(UIViewController*)newHeaderViewController animated:(BOOL)animated;
 
 @end
 
@@ -134,6 +169,14 @@
  */
 @property (nonatomic, assign) id<CHPagedDetailsViewControllerDelegate> delegate;
 
+/** Whether the header view should scroll vertically with the detail view off-screen to the top of the
+ screen, or should stick to the top of the screen.
+ 
+ By default the value is set to `YES` indicating the header view will scroll with the details view.
+ 
+ */
+@property (nonatomic, assign) BOOL headerViewShouldScrollAway;
+
 /** Whether the page control should scroll vertically with the header view off-screen to the top of the
  screen, or should stick to the top of the screen.
  
@@ -141,6 +184,8 @@
  
  */
 @property (nonatomic, assign) BOOL pageControlShouldScrollAway;
+
+//TODO: add tint color for page control (iOS 6 only)
 
 ///---------------------------------------------------------------------------------------
 /// @name Initializing a paged details view controller
@@ -158,7 +203,7 @@
  @param detailViewControllers  view controllers which views are to be displayed in horizontally 
  scrollable pages.
  */
-- (id)initWithViewControllerForHeader:(UIViewController *)headerViewController viewControllersForPagedDetails:(NSArray *)detailViewControllers;
+- (id)initWithViewControllerForHeader:(UIViewController*)headerViewController viewControllersForPagedDetails:(NSArray*)detailViewControllers;
 
 ///---------------------------------------------------------------------------------------
 /// @name Managing the header and details view controllers
@@ -170,7 +215,7 @@
  @param animated                Whether or not the transition between current and the new header
  view controller should animate.
  */
-- (void)setHeaderViewController:(UIViewController*) headerViewController animated:(BOOL)animated;
+- (void)setHeaderViewController:(UIViewController*)headerViewController animated:(BOOL)animated;
 
 /** Insert a new view controller in the details view controller collection at the index indicated, 
  and display its view as a page at the index.
@@ -192,7 +237,7 @@
  
  @return The index of the new page inserted.
  */
-- (NSUInteger)insertDetailsViewController:(UIViewController *)detailsViewController atIndex:(NSInteger)index animated:(BOOL)animated;
+- (NSUInteger)insertDetailsViewController:(UIViewController*)detailsViewController atIndex:(NSInteger)index animated:(BOOL)animated;
 
 /** Remove view controller from the details view controller collection at the index indicated.
  

@@ -46,7 +46,7 @@
     newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     newViewController.view.backgroundColor = [CHUtils randomColor];
 
-    CHPagedDetailsViewController *pagedDetailsViewController = [[CHPagedDetailsViewController alloc] initWithViewControllerForHeader:nil viewControllersForPagedDetails:[NSArray arrayWithObjects: tableviewController1, tableviewController2, newViewController, tableviewController3, nil]];
+    CHPagedDetailsViewController *pagedDetailsViewController = [[CHPagedDetailsViewController alloc] initWithViewControllerForHeader:topViewController viewControllersForPagedDetails:[NSArray arrayWithObjects: tableviewController1, tableviewController2, newViewController, tableviewController3, nil]];
     pagedDetailsViewController.pageControlShouldScrollAway = YES;
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:pagedDetailsViewController];
     

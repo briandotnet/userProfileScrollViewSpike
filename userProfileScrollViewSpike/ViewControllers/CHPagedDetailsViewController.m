@@ -27,9 +27,10 @@ static const CGFloat kDefaultHeaderViewHeight = 180.0f;
 static const CGFloat kPageControlHeight = 20.0f;
 static NSString *kContentOffsetKeyPath = @"contentOffset";
 
-- (id)initWithViewControllerForHeader:(UIViewController *)headerViewController viewControllersForPagedDetails:(NSArray<CHScrollableViewController> *)detailsViewControllers{
+- (id)initWithViewControllerForHeader:(UIViewController*)headerViewController viewControllersForPagedDetails:(NSArray<CHScrollableViewController>*)detailsViewControllers{
     self = [self init];
     if (self) {
+        self.headerViewShouldScrollAway = YES;
         _detailViewControllers = detailsViewControllers;
         _headerViewController = headerViewController;
         self.headerViewHeight = _headerViewController ? kDefaultHeaderViewHeight : 0.0f;
@@ -125,7 +126,7 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
     // when PagedDetailsViewController gets deallocated, remove all observers
     for (UIViewController *detailsViewController in self.detailViewControllers) {
         if ([detailsViewController conformsToProtocol:@protocol(CHScrollableViewController)]) {
-            [((UIViewController<CHScrollableViewController> *)detailsViewController).mainScrollView removeObserver:self forKeyPath:kContentOffsetKeyPath];
+            [((UIViewController<CHScrollableViewController>*)detailsViewController).mainScrollView removeObserver:self forKeyPath:kContentOffsetKeyPath];
         }
     }
     
@@ -133,7 +134,7 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
 
 #pragma mark - customer setter and getter methods
 
-- (void)setHeaderViewController:(UIViewController *)headerViewController{
+- (void)setHeaderViewController:(UIViewController*)headerViewController{
     if (self.headerViewController == headerViewController){
         return;
     }
@@ -144,7 +145,7 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
 
 #pragma mark - Public Methods
 
--(void)setHeaderViewController:(UIViewController*) headerViewController animated:(BOOL)animated{
+-(void)setHeaderViewController:(UIViewController*)headerViewController animated:(BOOL)animated{
 
     [self delegateWillReplaceHeaderViewController:self.headerViewController withNewHeaderViewController:headerViewController animated:animated];
     self.headerViewHeight = headerViewController ? kDefaultHeaderViewHeight : 0.0f;
@@ -191,7 +192,7 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
     }
 }
 
-- (NSUInteger)insertDetailsViewController:(UIViewController *)detailsViewController atIndex:(NSInteger)index animated:(BOOL)animated{
+- (NSUInteger)insertDetailsViewController:(UIViewController*)detailsViewController atIndex:(NSInteger)index animated:(BOOL)animated{
     if(detailsViewController == nil){
         return NSNotFound;
     }
@@ -230,12 +231,12 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
         return;
     }
 
-    UIViewController *detailsPageControllerToRemove = (UIViewController *)[self.detailViewControllers objectAtIndex:index];
+    UIViewController *detailsPageControllerToRemove = (UIViewController*)[self.detailViewControllers objectAtIndex:index];
     [self delegateWillRemovePageAtIndex:index];
     [self slideDownDetailsPage:detailsPageControllerToRemove.view atIndex:index animated:animated completion:^(BOOL finished) {
         [self removeSpaceForRemovedDetailsPageAtIndex:index animated:animated completion:^(BOOL finished) {
             if ([detailsPageControllerToRemove conformsToProtocol:@protocol(CHScrollableViewController)]) {
-                [((UIViewController<CHScrollableViewController> *)detailsPageControllerToRemove).mainScrollView removeObserver:self forKeyPath:kContentOffsetKeyPath];
+                [((UIViewController<CHScrollableViewController>*)detailsPageControllerToRemove).mainScrollView removeObserver:self forKeyPath:kContentOffsetKeyPath];
             }
             [detailsPageControllerToRemove willMoveToParentViewController:nil];
             [detailsPageControllerToRemove.view removeFromSuperview];
@@ -251,13 +252,13 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
 
 #pragma mark - Scroll View Delegate
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+- (void)scrollViewWillBeginDragging:(UIScrollView*)scrollView{
     if ([scrollView isEqual:self.detailsPagedScrollView]) {
         [self delegateWillBeginScrollFromPageIndex:self.pageControl.currentPage];
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView*)scrollView {
     
     if([scrollView isEqual:self.detailsPagedScrollView]){
         // Update the page when more than 50% of the previous/next page is visible
@@ -267,7 +268,7 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
     }
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+- (void)scrollViewDidEndDecelerating:(UIScrollView*)scrollView{
     if([scrollView isEqual:self.detailsPagedScrollView]){
         [self delegateDidScrollToPageIndex:self.pageControl.currentPage];
     }
@@ -399,15 +400,18 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
     self.detailsPagedContentView.frame = CGRectMake(0.0f, 0.0f, numberOfDetailsPages*newSize.width,  newSize.height);
 
     for (NSInteger i = 0, count = self.detailsPagedContentView.subviews.count; i < count; i ++) {
-        UIView *subview = (UIView *)self.detailsPagedContentView.subviews[i];
+        UIView *subview = (UIView*)self.detailsPagedContentView.subviews[i];
         subview.frame = CGRectMake(i * newSize.width, 0.0f, newSize.width,  newSize.height);
     }
     self.detailsPagedScrollView.contentSize = self.detailsPagedContentView.bounds.size;
     self.detailsPagedScrollView.contentOffset = CGPointMake(pageIndexBeforeRotation * newSize.width, 0);
 }
 
-- (void)scrollView:(UIScrollView *)scrollView needToRelayoutHeaderView:(UIView *)headerView andDetailsPagedScrollView:(UIScrollView*)detailsPagedScrollView{
+- (void)scrollView:(UIScrollView*)scrollView needToRelayoutHeaderView:(UIView*)headerView andDetailsPagedScrollView:(UIScrollView*)detailsPagedScrollView{
     if(self.headerViewHeight > 0.0f){
+        if (!self.headerViewShouldScrollAway) {
+            return;
+        }
         CGFloat offsetY = scrollView.contentOffset.y;
         CGFloat headerContentViewBottomOffset = self.pageControlShouldScrollAway ? 0.0f : CGRectGetHeight(self.pageControl.bounds);
         
@@ -451,9 +455,9 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
 }
 
 #pragma mark - KVO
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context{
     if([object isKindOfClass:[UIScrollView class]] && [keyPath isEqualToString:kContentOffsetKeyPath]){
-        UIScrollView *scrollView = (UIScrollView *)object;
+        UIScrollView *scrollView = (UIScrollView*)object;
         if (!CGPointEqualToPoint(scrollView.contentOffset, CGPointZero)) {
             [self scrollView:scrollView needToRelayoutHeaderView:self.headerContentView andDetailsPagedScrollView:self.detailsPagedScrollView];
         }
@@ -464,6 +468,36 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
 }
 
 #pragma mark - Delegate wrapper methods
+
+-(void)delegateHeaderViewDidScroll{
+    if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:headerViewDidScroll:)]) {
+        return [self.delegate pagedDetailsViewController:self headerViewDidScroll:self.headerViewController.view];
+    }
+}
+
+-(void)delegateHeaderViewWillBecomeHidden{
+    if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:headerViewWillBecomeHidden:)]) {
+        return [self.delegate pagedDetailsViewController:self headerViewWillBecomeHidden:self.headerViewController.view];
+    }
+}
+
+-(void)delegateHeaderViewDidBecomeHidden{
+    if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:headerViewDidBecomeHidden:)]) {
+        return [self.delegate pagedDetailsViewController:self headerViewDidBecomeHidden:self.headerViewController.view];
+    }
+}
+
+-(void)delegateHeaderViewWillBecomeFullyVisible{
+    if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:headerViewWillBecomeFullyVisible:)]) {
+        return [self.delegate pagedDetailsViewController:self headerViewWillBecomeFullyVisible:self.headerViewController.view];
+    }
+}
+
+-(void)delegateHeaderViewDidBecomeFullyVisible{
+    if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:headerViewDidBecomeFullyVisible:)]) {
+        return [self.delegate pagedDetailsViewController:self headerViewDidBecomeFullyVisible:self.headerViewController.view];
+    }
+}
 
 - (void)delegateWillBeginScrollFromPageIndex:(NSInteger) fromPageIndex {
     if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:willBeginScrollFromPageIndex:)]){
@@ -495,13 +529,13 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
         return [self.delegate pagedDetailsViewController:self didInsertPageAtIndex:indexOfPageToInsert];
     }
 }
-- (void)delegateWillReplaceHeaderViewController:(UIViewController *)currentHeaderViewController withNewHeaderViewController:(UIViewController*)
+- (void)delegateWillReplaceHeaderViewController:(UIViewController*)currentHeaderViewController withNewHeaderViewController:(UIViewController*)
 newHeaderViewController animated:(BOOL)animated{
     if(nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:willReplaceHeaderViewController:withNewHeaderViewController:animated:)]){
         return [self.delegate pagedDetailsViewController:self willReplaceHeaderViewController:currentHeaderViewController withNewHeaderViewController:newHeaderViewController animated:(BOOL)animated];
     }
 }
-- (void)delegateDidReplaceHeaderViewController:(UIViewController *)replacedHeaderViewController withNewHeaderViewController:(UIViewController*)newHeaderViewController animated:(BOOL)animated{
+- (void)delegateDidReplaceHeaderViewController:(UIViewController*)replacedHeaderViewController withNewHeaderViewController:(UIViewController*)newHeaderViewController animated:(BOOL)animated{
     if(nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:didReplaceHeaderViewController:withNewHeaderViewController:animated:)]){
         return [self.delegate pagedDetailsViewController:self didReplaceHeaderViewController:replacedHeaderViewController withNewHeaderViewController:newHeaderViewController animated:(BOOL)animated];
     }

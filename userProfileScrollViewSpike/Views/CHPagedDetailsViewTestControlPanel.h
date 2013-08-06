@@ -14,6 +14,7 @@
 @property (nonatomic, strong) UITextField *indexTextField;
 @property (nonatomic, strong) UISwitch *animationSwitch;
 @property (nonatomic, strong) UISwitch *pageControlScrollAwaySwitch;
+@property (nonatomic, strong) UISwitch *headerScrollAwaySwitch;
 @property (nonatomic, weak) CHPagedDetailsViewController *testingTarget;
 
 
