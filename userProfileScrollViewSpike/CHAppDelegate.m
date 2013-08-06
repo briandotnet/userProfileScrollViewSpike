@@ -47,7 +47,7 @@
     newViewController.view.backgroundColor = [CHUtils randomColor];
 
     CHPagedDetailsViewController *pagedDetailsViewController = [[CHPagedDetailsViewController alloc] initWithViewControllerForHeader:nil viewControllersForPagedDetails:[NSArray arrayWithObjects: tableviewController1, tableviewController2, newViewController, tableviewController3, nil]];
-    pagedDetailsViewController.pageControlShouldScrollAway = NO;
+    pagedDetailsViewController.pageControlShouldScrollAway = YES;
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:pagedDetailsViewController];
     
     self.window.rootViewController = self.navigationController;

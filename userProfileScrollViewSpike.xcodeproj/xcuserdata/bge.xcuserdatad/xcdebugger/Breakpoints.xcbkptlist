@@ -7,88 +7,66 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "userProfileScrollViewSpike/CHUserSummaryView.m"
-         timestampString = "395625831.575089"
+         filePath = "userProfileScrollViewSpike/ViewControllers/CHPagedDetailsViewController.m"
+         timestampString = "397472222.467899"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "64"
-         endingLineNumber = "64"
-         landmarkName = "-initWithUserProfile:"
+         startingLineNumber = "411"
+         endingLineNumber = "411"
+         landmarkName = "-loadView"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "userProfileScrollViewSpike/CHUserProfileViewController.m"
-         timestampString = "395792669.670765"
+         filePath = "userProfileScrollViewSpike/ViewControllers/CHPagedDetailsViewController.m"
+         timestampString = "397471368.465612"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "146"
-         endingLineNumber = "146"
-         landmarkName = "-scrollViewDidScroll:"
+         startingLineNumber = "149"
+         endingLineNumber = "149"
+         landmarkName = "-loadView"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "userProfileScrollViewSpike/CHUserProfileViewController.m"
-         timestampString = "395792669.670765"
+         filePath = "userProfileScrollViewSpike/ViewControllers/CHPagedDetailsViewController.m"
+         timestampString = "397472222.467899"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "179"
-         endingLineNumber = "179"
-         landmarkName = "-tableViewDidScroll:"
+         startingLineNumber = "175"
+         endingLineNumber = "175"
+         landmarkName = "-loadView"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "userProfileScrollViewSpike/CHUserProfileViewController.m"
-         timestampString = "395792669.670765"
+         filePath = "userProfileScrollViewSpike/ViewControllers/CHPagedDetailsViewController.m"
+         timestampString = "397470831.357391"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "165"
-         endingLineNumber = "165"
-         landmarkName = "-tableViewDidScroll:"
+         startingLineNumber = "96"
+         endingLineNumber = "96"
+         landmarkName = "-loadView"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "userProfileScrollViewSpike/CHUserProfileViewController.m"
-         timestampString = "395792669.670765"
+         filePath = "userProfileScrollViewSpike/ViewControllers/CHPagedDetailsViewController.m"
+         timestampString = "397469998.625492"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "125"
-         endingLineNumber = "125"
-         landmarkName = "-willAnimateRotationToInterfaceOrientation:duration:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "userProfileScrollViewSpike/CHUserProfileViewController.m"
-         timestampString = "395792669.670765"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "133"
-         endingLineNumber = "133"
-         landmarkName = "-resizeUserDetailsPagesWithScrollViewSize:"
+         startingLineNumber = "47"
+         endingLineNumber = "47"
+         landmarkName = "-loadView"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
-   <ExceptionBreakpoints>
-      <ExceptionBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         scope = "0"
-         stopOnStyle = "0">
-      </ExceptionBreakpoint>
-   </ExceptionBreakpoints>
 </Bucket>
