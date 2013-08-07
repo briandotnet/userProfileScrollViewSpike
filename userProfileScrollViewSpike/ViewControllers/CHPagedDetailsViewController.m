@@ -22,6 +22,7 @@
     // since pageController is linked to scrollViewDidScroll event, during rotation where view size is changed, pageControl.currentPage will be changed. We needed an ivar to keep track of current page.
     NSInteger pageIndexBeforeRotation;
 }
+
 static const CGFloat animationDurationAnimated = 0.3f;
 static const CGFloat kDefaultHeaderViewHeight = 180.0f;
 static const CGFloat kPageControlHeight = 20.0f;
@@ -39,9 +40,7 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
 
 -(void)loadView{
     [super loadView];
-//    self.view.backgroundColor = [UIColor yellowColor];
-    UIView *view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
-    self.view = view;
+
     CGFloat currentViewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat currentViewHeight = CGRectGetHeight(self.view.bounds);
     NSInteger numberOfDetailsPages = _detailViewControllers.count;
@@ -72,7 +71,9 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
     self.pageControl.userInteractionEnabled = NO;
     self.pageControl.currentPage = 0;
     [self.headerContentView addSubview:self.pageControl];
+    
     CGFloat pageControlScrollViewOverlap = self.pageControlShouldScrollAway ? 0.0f : kPageControlHeight;
+    
     self.detailsPagedScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, CGRectGetHeight(self.headerContentView.frame) - pageControlScrollViewOverlap, currentViewWidth, currentViewHeight - CGRectGetHeight(self.headerContentView.frame) + pageControlScrollViewOverlap)];
     self.detailsPagedScrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.detailsPagedScrollView.delegate = self;
@@ -201,6 +202,7 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
         [oldHeaderViewController removeFromParentViewController];
         [self delegateDidReplaceHeaderViewController:oldHeaderViewController withNewHeaderViewController:self.headerViewController animated:animated];
     };
+    
     if (animated) {
         [UIView animateWithDuration:animationDurationAnimated animations:animation completion:completion];
     }
@@ -415,11 +417,11 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
         return;
     }
     NSInteger numberOfDetailsPages = self.detailViewControllers.count;
-    self.detailsPagedContentView.frame = CGRectMake(0.0f, 0.0f, numberOfDetailsPages*newSize.width,  newSize.height);
+    self.detailsPagedContentView.frame = CGRectMake(0.0f, 0.0f, numberOfDetailsPages*newSize.width, newSize.height);
 
     for (NSInteger i = 0, count = self.detailsPagedContentView.subviews.count; i < count; i ++) {
         UIView *subview = (UIView*)self.detailsPagedContentView.subviews[i];
-        subview.frame = CGRectMake(i * newSize.width, 0.0f, newSize.width,  newSize.height);
+        subview.frame = CGRectMake(i * newSize.width, 0.0f, newSize.width, newSize.height);
     }
     self.detailsPagedScrollView.contentSize = self.detailsPagedContentView.bounds.size;
     self.detailsPagedScrollView.contentOffset = CGPointMake(pageIndexBeforeRotation * newSize.width, 0);
@@ -440,7 +442,7 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
         BOOL headerViewIsHalfVisible =  (CGRectGetMaxY(headerView.frame) > headerContentViewBottomOffset) && (CGRectGetMinY(headerView.frame) < 0.0f);
         BOOL headerViewIsFullyVisible = CGRectGetMinY(headerView.frame) >= 0.0f;
 
-        if (headerViewIsHalfVisible || (headerViewIsHidden && isPullingDown ) || (headerViewIsFullyVisible && isPullingUp)) {
+        if (headerViewIsHalfVisible || (headerViewIsHidden && isPullingDown) || (headerViewIsFullyVisible && isPullingUp)) {
             
             // first calculate the new frame for the headerView vertical according to the content y offset
             CGRect newFrameForHeaderView = CGRectOffset(headerView.frame, 0.0f, - offsetY);
@@ -530,22 +532,22 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
     }
 }
 
-- (void)delegateWillBeginScrollFromPageIndex:(NSInteger) fromPageIndex {
+- (void)delegateWillBeginScrollFromPageIndex:(NSInteger)fromPageIndex{
     if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:willBeginScrollFromPageIndex:)]){
         return [self.delegate pagedDetailsViewController:self willBeginScrollFromPageIndex:fromPageIndex];
     }
 }
-- (void)delegateDidScrollToPageIndex:(NSInteger) toPageIndex {
+- (void)delegateDidScrollToPageIndex:(NSInteger)toPageIndex{
     if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:didScrollToPageIndex:)]){
         return [self.delegate pagedDetailsViewController:self didScrollToPageIndex:toPageIndex];
     }
 }
-- (void)delegateWillRemovePageAtIndex:(NSInteger) indexOfPageToRemove {
+- (void)delegateWillRemovePageAtIndex:(NSInteger)indexOfPageToRemove{
     if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:willRemovePageAtIndex:)]){
         return [self.delegate pagedDetailsViewController:self willRemovePageAtIndex:indexOfPageToRemove];
     }
 }
-- (void)delegateDidRemovePageAtIndex:(NSInteger) indexOfPageRemoved {
+- (void)delegateDidRemovePageAtIndex:(NSInteger) indexOfPageRemoved{
     if (nil != self.delegate && [self.delegate respondsToSelector:@selector(pagedDetailsViewController:didRemovePageAtIndex:)]){
         return [self.delegate pagedDetailsViewController:self didRemovePageAtIndex:indexOfPageRemoved];
     }
