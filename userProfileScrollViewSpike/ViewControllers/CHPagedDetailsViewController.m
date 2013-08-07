@@ -33,7 +33,6 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
         self.headerViewShouldScrollAway = YES;
         _detailViewControllers = detailsViewControllers;
         _headerViewController = headerViewController;
-        self.headerViewHeight = _headerViewController ? kDefaultHeaderViewHeight : 0.0f;
     }
     return self;
 }
@@ -47,6 +46,16 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
     CGFloat currentViewHeight = CGRectGetHeight(self.view.bounds);
     NSInteger numberOfDetailsPages = _detailViewControllers.count;
     
+    if (self.headerViewController) {
+        // use header view to set the header view height first
+        if (CGRectGetHeight(self.headerViewController.view.bounds) == 0.0f) {
+            self.headerViewHeight = kDefaultHeaderViewHeight;
+        }
+        else{
+            self.headerViewHeight = CGRectGetHeight(self.headerViewController.view.bounds);
+        }
+    }
+    
     self.headerContentView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, currentViewWidth, self.headerViewHeight + kPageControlHeight)];
     self.headerContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:self.headerContentView];
@@ -55,9 +64,9 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
         [self.headerContentView addSubview:self.headerViewController.view];
         self.headerViewController.view.frame = CGRectMake(0.0f, 0.0f, currentViewWidth, self.headerViewHeight);
         self.headerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        
         [self.headerViewController didMoveToParentViewController:self];
     }
+    
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0.0f, self.headerViewHeight, currentViewWidth, kPageControlHeight)];
     self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     self.pageControl.userInteractionEnabled = NO;
@@ -129,7 +138,6 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
             [((UIViewController<CHScrollableViewController>*)detailsViewController).mainScrollView removeObserver:self forKeyPath:kContentOffsetKeyPath];
         }
     }
-    
 }
 
 #pragma mark - customer setter and getter methods
@@ -148,7 +156,17 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
 -(void)setHeaderViewController:(UIViewController*)headerViewController animated:(BOOL)animated{
 
     [self delegateWillReplaceHeaderViewController:self.headerViewController withNewHeaderViewController:headerViewController animated:animated];
-    self.headerViewHeight = headerViewController ? kDefaultHeaderViewHeight : 0.0f;
+    if (headerViewController) {
+        if (CGRectGetHeight(headerViewController.view.bounds) == 0.0f) {
+            self.headerViewHeight = kDefaultHeaderViewHeight;
+        }
+        else{
+            self.headerViewHeight = CGRectGetHeight(headerViewController.view.bounds);
+        }
+    }
+    else{
+        self.headerViewHeight = 0.0f;
+    }
     if(headerViewController){
         // add newHeaderViewController and its view
         [self addChildViewController: headerViewController];
@@ -438,10 +456,23 @@ static NSString *kContentOffsetKeyPath = @"contentOffset";
             if (pointsOverShifted != 0.0f) {
                 newFrameForHeaderView = CGRectOffset(newFrameForHeaderView, 0.0f, pointsOverShifted);
             }
-
+            
+            if (CGRectGetMaxY(newFrameForHeaderView) <= headerContentViewBottomOffset) {
+                [self delegateHeaderViewWillBecomeHidden];
+            }
+            if (CGRectGetMinY(newFrameForHeaderView) >= 0.0f) {
+                [self delegateHeaderViewWillBecomeFullyVisible];
+            }
             // take a note of the actual points we shifted the header view vertically
-            float actualYDelta = headerView.frame.origin.y - newFrameForHeaderView.origin.y ;
+            float actualYDelta = headerView.frame.origin.y - newFrameForHeaderView.origin.y;
             headerView.frame = newFrameForHeaderView;
+            [self delegateHeaderViewDidScroll];
+            if (CGRectGetMaxY(headerView.frame) <= headerContentViewBottomOffset) {
+                [self delegateHeaderViewDidBecomeHidden];
+            }
+            if (CGRectGetMinY(headerView.frame) >= 0.0f) {
+                [self delegateHeaderViewDidBecomeFullyVisible];
+            }
             
             // reset the content offset to 0 so the content in the scorll view doesn't scroll
             // note: do this before set the frame of any of the super views of the scroll view or contentOffset will be updated twice!

@@ -171,11 +171,13 @@
     userProfile.jobTitle  = [NSString stringWithFormat: @"Project Manager %d", arc4random() % 10];    
     
     UIViewController *topViewController = [[UIViewController alloc] init];
-    topViewController.view = [[CHUserProfileTopView alloc] initWithUserProfile:userProfile];
     switch ([self.indexTextField.text integerValue]) {
         case 0:
+            topViewController.view = [[CHUserProfileTopView alloc] initWithUserProfile:userProfile];
             break;
         default:
+            topViewController.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 110)];
+            topViewController.view.backgroundColor = [CHUtils randomColor];
             break;
     }
     [self.testingTarget setHeaderViewController:topViewController animated:self.animationSwitch.on];

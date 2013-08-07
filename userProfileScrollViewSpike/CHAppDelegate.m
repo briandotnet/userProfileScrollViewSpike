@@ -33,7 +33,8 @@
 
     UIViewController *topViewController = [[UIViewController alloc] init];
     topViewController.view = [[CHUserProfileTopView alloc] initWithUserProfile:userProfile];
-    
+    topViewController.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 110)];
+
     CHSimpleTableViewController* tableviewController1;
     CHSimpleTableViewController* tableviewController2;
     CHSimpleTableViewController* tableviewController3;

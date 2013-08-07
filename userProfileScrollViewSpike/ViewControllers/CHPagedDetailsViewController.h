@@ -128,6 +128,13 @@
 
 @property (nonatomic, readonly, strong) UIPageControl *pageControl;
 @property (nonatomic, readonly, strong) UIScrollView *detailsPagedScrollView;
+
+/** The height of header view
+
+ If a view controller with view that has a specific bounds assigned to header view controller (not auto layout),
+ the height of the new header view will be used and this headerViewHeight will updates to reflect that change.
+ */
+
 @property (nonatomic, readonly, assign) CGFloat headerViewHeight;
 
 /** The view controller displays stationary on the top half of the view. 
